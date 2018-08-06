@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { initialize } from 'redux-form';
 import { defectTypesSelector } from 'controllers/project';
 import { FieldProvider } from 'components/fields/fieldProvider';
 import { injectIntl, defineMessages, intlShape } from 'react-intl';
@@ -19,6 +20,7 @@ import {
   TogglerControl,
   CheckboxControl,
 } from './controls';
+import { WIDGET_WIZARD_FORM } from '../widgetWizardContent/wizardControlsSection/constants';
 
 const messages = defineMessages({
   CriteriaFiledLabel: {
@@ -36,17 +38,39 @@ const messages = defineMessages({
 });
 
 @injectIntl
-@connect((state) => ({
-  defectTypes: defectTypesSelector(state),
-}))
+@connect(
+  (state) => ({
+    defectTypes: defectTypesSelector(state),
+  }),
+  {
+    initializeWizardSecondStepForm: (data) => initialize(WIDGET_WIZARD_FORM, data, true),
+  },
+)
 export class LaunchStatisticsControls extends Component {
   static propTypes = {
     intl: intlShape.isRequired,
     defectTypes: PropTypes.object.isRequired,
+    initializeWizardSecondStepForm: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.criteria = getWidgetCriteriaOptions(
+      [LAUNCH_STATUSES_OPTIONS, DEFECT_TYPES_OPTIONS],
+      props.defectTypes,
+      props.intl.formatMessage,
+    );
+    props.initializeWizardSecondStepForm({
+      criteria: this.criteria.map((criteria) => criteria.value),
+      items: '10',
+      mode: CHART_MODES.LAUNCH_MODE,
+      viewMode: CHART_MODES.AREA_VIEW,
+      zoom: false,
+    });
+  }
+
   render() {
-    const { intl, defectTypes } = this.props;
+    const { intl } = this.props;
     return (
       <Fragment>
         <FiltersControl />
@@ -55,11 +79,7 @@ export class LaunchStatisticsControls extends Component {
             fieldLabel={intl.formatMessage(messages.CriteriaFiledLabel)}
             multiple
             selectAll
-            options={getWidgetCriteriaOptions(
-              [LAUNCH_STATUSES_OPTIONS, DEFECT_TYPES_OPTIONS],
-              defectTypes,
-              intl.formatMessage,
-            )}
+            options={this.criteria}
           />
         </FieldProvider>
         <FieldProvider name="items">

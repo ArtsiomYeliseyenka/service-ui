@@ -10,9 +10,12 @@ import styles from './modalLayout.scss';
 
 const cx = classNames.bind(styles);
 
-@connect(null, {
-  hideModalAction,
-})
+@connect(
+  null,
+  {
+    hideModalAction,
+  },
+)
 export class ModalLayout extends Component {
   static propTypes = {
     className: PropTypes.string,

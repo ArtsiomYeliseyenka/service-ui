@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
+import { ScrollWrapper } from 'components/main/scrollWrapper';
 import { withModal, ModalHeader } from 'components/main/modal';
 import { SpinningPreloader } from 'components/preloaders/spinningPreloader';
 import classNames from 'classnames/bind';
@@ -47,6 +48,9 @@ export class WidgetWizardModal extends Component {
   onMount() {
     this.setState({ shown: true });
   }
+  onClickModal = (e) => {
+    !this.modal.contains(e.target) && this.closeModal();
+  };
   onKeydown = (e) => {
     if (e.keyCode === 27) {
       this.closeModal();
@@ -70,28 +74,32 @@ export class WidgetWizardModal extends Component {
         >
           <div className={cx('backdrop')} onClick={this.closeModal} />
         </CSSTransition>
-        <CSSTransition
-          timeout={300}
-          in={this.state.shown}
-          classNames={cx('modal-window-animation')}
-          onExited={this.props.hideModalAction}
-        >
-          {(status) => (
-            <div
-              ref={(modal) => {
-                this.modal = modal;
-              }}
-              className={cx('modal-window')}
+        <div className={cx('scrolling-content')} onClick={this.onClickModal}>
+          <ScrollWrapper>
+            <CSSTransition
+              timeout={300}
+              in={this.state.shown}
+              classNames={cx('modal-window-animation')}
+              onExited={this.props.hideModalAction}
             >
-              <ModalHeader
-                text={intl.formatMessage(messages.headerText)}
-                onClose={this.closeModal}
-              />
+              {(status) => (
+                <div
+                  ref={(modal) => {
+                    this.modal = modal;
+                  }}
+                  className={cx('modal-window')}
+                >
+                  <ModalHeader
+                    text={intl.formatMessage(messages.headerText)}
+                    onClose={this.closeModal}
+                  />
 
-              {status !== 'exited' ? <WidgetWizardContent /> : <SpinningPreloader />}
-            </div>
-          )}
-        </CSSTransition>
+                  {status !== 'exited' ? <WidgetWizardContent /> : <SpinningPreloader />}
+                </div>
+              )}
+            </CSSTransition>
+          </ScrollWrapper>
+        </div>
       </div>
     );
   }

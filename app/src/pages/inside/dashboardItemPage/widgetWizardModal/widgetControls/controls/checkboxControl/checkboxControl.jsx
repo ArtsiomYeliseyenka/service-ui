@@ -9,7 +9,6 @@ const cx = classNames.bind(styles);
 
 export const CheckboxControl = ({ fieldLabel, text, ...rest }) => (
   <div className={cx('checkbox-control')}>
-    {console.log(rest)}
     <ModalField label={fieldLabel} labelWidth={FIELD_LABEL_WIDTH}>
       <InputCheckbox {...rest}>{text}</InputCheckbox>
     </ModalField>
