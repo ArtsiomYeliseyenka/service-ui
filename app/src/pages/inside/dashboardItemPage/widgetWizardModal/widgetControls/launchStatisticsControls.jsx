@@ -9,7 +9,7 @@ import { getWidgetCriteriaOptions } from './utils/getWidgetCriteriaOptions';
 import { getWidgetModeOptions } from './utils/getWidgetModeOptions';
 import {
   LAUNCH_STATUSES_OPTIONS,
-  DEFECT_TYPES_OPTIONS,
+  GROUPED_DEFECT_TYPES_OPTIONS,
   ITEMS_INPUT_WIDTH,
   CHART_MODES,
 } from './constants';
@@ -59,21 +59,20 @@ export class LaunchStatisticsControls extends Component {
 
   constructor(props) {
     super(props);
+    const { intl, widgetSettings, defectTypes, initializeWizardSecondStepForm } = props;
     this.criteria = getWidgetCriteriaOptions(
-      [LAUNCH_STATUSES_OPTIONS, DEFECT_TYPES_OPTIONS],
-      props.defectTypes,
-      props.intl.formatMessage,
+      [LAUNCH_STATUSES_OPTIONS, GROUPED_DEFECT_TYPES_OPTIONS],
+      intl.formatMessage,
+      { defectTypes },
     );
-    props.initializeWizardSecondStepForm({
-      criteria: props.widgetSettings.criteria
-        ? props.widgetSettings.criteria
+    initializeWizardSecondStepForm({
+      criteria: widgetSettings.criteria
+        ? widgetSettings.criteria
         : this.criteria.map((criteria) => criteria.value),
-      items: props.widgetSettings.items ? props.widgetSettings.items : DEFAULT_ITEMS_COUNT,
-      mode: props.widgetSettings.mode ? props.widgetSettings.mode : CHART_MODES.LAUNCH_MODE,
-      viewMode: props.widgetSettings.viewMode
-        ? props.widgetSettings.viewMode
-        : CHART_MODES.AREA_VIEW,
-      zoom: props.widgetSettings.zoom ? props.widgetSettings.zoom : false,
+      items: widgetSettings.items ? widgetSettings.items : DEFAULT_ITEMS_COUNT,
+      mode: widgetSettings.mode ? widgetSettings.mode : CHART_MODES.LAUNCH_MODE,
+      viewMode: widgetSettings.viewMode ? widgetSettings.viewMode : CHART_MODES.AREA_VIEW,
+      zoom: widgetSettings.zoom ? widgetSettings.zoom : false,
     });
   }
 

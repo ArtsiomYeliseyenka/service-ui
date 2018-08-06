@@ -9,6 +9,14 @@ const messages = defineMessages({
     id: 'WidgetModes.timelineMode',
     defaultMessage: 'Timeline mode',
   },
+  allLaunches: {
+    id: 'WidgetModes.allLaunches',
+    defaultMessage: 'All launches',
+  },
+  latestLaunches: {
+    id: 'WidgetModes.latestLaunches',
+    defaultMessage: 'Latest launches',
+  },
   areaView: {
     id: 'WidgetModes.areaViewMode',
     defaultMessage: 'Area view',
@@ -16,6 +24,14 @@ const messages = defineMessages({
   barView: {
     id: 'WidgetModes.barViewMode',
     defaultMessage: 'Bar view',
+  },
+  donutView: {
+    id: 'WidgetModes.donutView',
+    defaultMessage: 'Donut view',
+  },
+  panelView: {
+    id: 'WidgetModes.panelView',
+    defaultMessage: 'Panel view',
   },
 });
 

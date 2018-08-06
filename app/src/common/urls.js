@@ -66,6 +66,8 @@ export const URLS = {
       'page.sort': 'login,ASC',
       term: input,
     })}`,
+  projectUsernamesSearch: (activeProject) =>
+    `${urlBase}project/${activeProject}/usernames?filter.cnt.users=`,
 
   suite: (activeProject, suiteId) => `${urlBase}${activeProject}/item/${suiteId}`,
 

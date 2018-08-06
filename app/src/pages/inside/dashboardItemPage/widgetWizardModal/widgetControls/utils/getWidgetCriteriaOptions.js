@@ -12,7 +12,27 @@ import {
   TO_INVESTIGATE,
   NO_DEFECT,
 } from 'common/constants/defectTypes';
-import { LAUNCH_STATUSES_OPTIONS, DEFECT_TYPES_OPTIONS } from '../constants';
+import {
+  START_LAUNCH,
+  FINISH_LAUNCH,
+  DELETE_LAUNCH,
+  CREATE_USER,
+  UPDATE_PROJECT,
+  ACTIONS_WITH_ISSUES,
+  ACTIONS_WITH_DASHBOARDS,
+  ACTIONS_WITH_WIDGETS,
+  ACTIONS_WITH_FILTERS,
+  ACTIONS_WITH_BTS,
+  ACTIONS_WITH_AA_SETTINGS,
+  ACTIONS_WITH_DEFECTS,
+  ACTIONS_WITH_IMPORT,
+} from 'common/constants/actionTypes';
+import {
+  LAUNCH_STATUSES_OPTIONS,
+  DEFECT_TYPES_OPTIONS,
+  GROUPED_DEFECT_TYPES_OPTIONS,
+  USER_ACTIONS_OPTIONS,
+} from '../constants';
 
 const messages = defineMessages({
   CriteriaTotal: {
@@ -67,6 +87,58 @@ const messages = defineMessages({
     id: 'WidgetCriteriaOption.Defect_Type_ND001',
     defaultMessage: 'No defect',
   },
+  [START_LAUNCH]: {
+    id: 'WidgetCriteriaOption.start_launch',
+    defaultMessage: 'Start launch',
+  },
+  [FINISH_LAUNCH]: {
+    id: 'WidgetCriteriaOption.finish_launch',
+    defaultMessage: 'Finish launch',
+  },
+  [DELETE_LAUNCH]: {
+    id: 'WidgetCriteriaOption.delete_launch',
+    defaultMessage: 'Delete launch',
+  },
+  [ACTIONS_WITH_ISSUES]: {
+    id: 'WidgetCriteriaOption.issues_actions',
+    defaultMessage: 'Actions with issues',
+  },
+  [CREATE_USER]: {
+    id: 'WidgetCriteriaOption.create_user',
+    defaultMessage: 'Add, create user',
+  },
+  [ACTIONS_WITH_DASHBOARDS]: {
+    id: 'WidgetCriteriaOption.dashboards_actions',
+    defaultMessage: 'Update dashboard',
+  },
+  [ACTIONS_WITH_WIDGETS]: {
+    id: 'WidgetCriteriaOption.widgets_actions',
+    defaultMessage: 'Update widget',
+  },
+  [ACTIONS_WITH_FILTERS]: {
+    id: 'WidgetCriteriaOption.filters_actions',
+    defaultMessage: 'Update filter',
+  },
+  [ACTIONS_WITH_BTS]: {
+    id: 'WidgetCriteriaOption.bts_actions',
+    defaultMessage: 'Update BTS',
+  },
+  [UPDATE_PROJECT]: {
+    id: 'WidgetCriteriaOption.update_project',
+    defaultMessage: 'Update project settings',
+  },
+  [ACTIONS_WITH_AA_SETTINGS]: {
+    id: 'WidgetCriteriaOption.aa_settings_actions',
+    defaultMessage: 'Update Auto-Analysis settings',
+  },
+  [ACTIONS_WITH_DEFECTS]: {
+    id: 'WidgetCriteriaOption.defects_actions',
+    defaultMessage: 'Update defect types',
+  },
+  [ACTIONS_WITH_IMPORT]: {
+    id: 'WidgetCriteriaOption.import_actions',
+    defaultMessage: 'Import',
+  },
 });
 
 const DEFECT_STATISTICS_BASE = 'statistics$defects$';
@@ -86,7 +158,7 @@ const getLaunchStatusesOptions = (formatMessage) => [
   { value: STATS_SKIPPED, label: formatMessage(messages.CriteriaSkipped) },
 ];
 
-const getDefectTypesOptions = (defectTypes, formatMessage) => {
+const getGroupedDefectTypesOptions = (defectTypes, formatMessage) => {
   let defectTypesOptions = [];
   DEFECT_TYPES_SEQUENCE.forEach((defectTypeId) => {
     const defectTypeGroup = defectTypes[defectTypeId];
@@ -124,7 +196,40 @@ const getDefectTypesOptions = (defectTypes, formatMessage) => {
   return defectTypesOptions;
 };
 
-export const getWidgetCriteriaOptions = (optionGroups, defectTypes, formatMessage) => {
+const getDefectTypesOptions = (defectTypes, formatMessage) => {
+  let defectTypesOptions = [];
+  DEFECT_TYPES_SEQUENCE.forEach((defectTypeId) => {
+    const defectTypeGroup = defectTypes[defectTypeId];
+
+    defectTypesOptions = defectTypesOptions.concat(
+      defectTypeGroup.map((defectType) => ({
+        value: `${DEFECT_STATISTICS_BASE}${defectType.typeRef.toLowerCase()}$${defectType.locator}`,
+        label: messages[defectType.locator]
+          ? formatMessage(messages[`Defect_Type_${defectType.locator}`])
+          : defectType.longName,
+      })),
+    );
+  });
+  return defectTypesOptions;
+};
+
+const getUserActionOptions = (formatMessage) => [
+  { value: START_LAUNCH, label: formatMessage(messages[START_LAUNCH]) },
+  { value: FINISH_LAUNCH, label: formatMessage(messages[FINISH_LAUNCH]) },
+  { value: DELETE_LAUNCH, label: formatMessage(messages[DELETE_LAUNCH]) },
+  { value: ACTIONS_WITH_ISSUES, label: formatMessage(messages[ACTIONS_WITH_ISSUES]) },
+  { value: CREATE_USER, label: formatMessage(messages[CREATE_USER]) },
+  { value: ACTIONS_WITH_DASHBOARDS, label: formatMessage(messages[ACTIONS_WITH_DASHBOARDS]) },
+  { value: ACTIONS_WITH_WIDGETS, label: formatMessage(messages[ACTIONS_WITH_WIDGETS]) },
+  { value: ACTIONS_WITH_FILTERS, label: formatMessage(messages[ACTIONS_WITH_FILTERS]) },
+  { value: ACTIONS_WITH_BTS, label: formatMessage(messages[ACTIONS_WITH_BTS]) },
+  { value: UPDATE_PROJECT, label: formatMessage(messages[UPDATE_PROJECT]) },
+  { value: ACTIONS_WITH_AA_SETTINGS, label: formatMessage(messages[ACTIONS_WITH_AA_SETTINGS]) },
+  { value: ACTIONS_WITH_DEFECTS, label: formatMessage(messages[ACTIONS_WITH_DEFECTS]) },
+  { value: ACTIONS_WITH_IMPORT, label: formatMessage(messages[ACTIONS_WITH_IMPORT]) },
+];
+
+export const getWidgetCriteriaOptions = (optionGroups, formatMessage, meta) => {
   let options = [];
   optionGroups.forEach((optionGroup) => {
     switch (optionGroup) {
@@ -132,7 +237,13 @@ export const getWidgetCriteriaOptions = (optionGroups, defectTypes, formatMessag
         options = options.concat(getLaunchStatusesOptions(formatMessage));
         break;
       case DEFECT_TYPES_OPTIONS:
-        options = options.concat(getDefectTypesOptions(defectTypes, formatMessage));
+        options = options.concat(getDefectTypesOptions(meta.defectTypes, formatMessage));
+        break;
+      case GROUPED_DEFECT_TYPES_OPTIONS:
+        options = options.concat(getGroupedDefectTypesOptions(meta.defectTypes, formatMessage));
+        break;
+      case USER_ACTIONS_OPTIONS:
+        options = options.concat(getUserActionOptions(formatMessage));
         break;
       default:
     }
