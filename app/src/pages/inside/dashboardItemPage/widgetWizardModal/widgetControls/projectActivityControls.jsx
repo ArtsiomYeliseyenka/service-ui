@@ -26,15 +26,15 @@ const messages = defineMessages({
     defaultMessage: 'User name',
   },
   UsersPlaceholder: {
-    id: 'EntityLaunchOwner.UsersPlaceholder',
+    id: 'ProjectActivityControls.UsersPlaceholder',
     defaultMessage: 'Enter user name',
   },
   UsersFocusPlaceholder: {
-    id: 'EntityLaunchOwner.UsersFocusPlaceholder',
+    id: 'ProjectActivityControls.UsersFocusPlaceholder',
     defaultMessage: 'At least 3 symbols required.',
   },
   UsersNoMatches: {
-    id: 'EntityLaunchOwner.UsersNoMatches',
+    id: 'ProjectActivityControls.UsersNoMatches',
     defaultMessage: 'No matches found.',
   },
 });
