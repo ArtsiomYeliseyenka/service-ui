@@ -38,8 +38,8 @@ export class LaunchDurationControls extends Component {
     super(props);
     const { widgetSettings, initializeWizardSecondStepForm } = props;
     initializeWizardSecondStepForm({
-      items: widgetSettings.items ? widgetSettings.items : DEFAULT_ITEMS_COUNT,
-      mode: widgetSettings.mode ? widgetSettings.mode : CHART_MODES.ALL_LAUNCHES,
+      items: widgetSettings.items || DEFAULT_ITEMS_COUNT,
+      mode: widgetSettings.mode || CHART_MODES.ALL_LAUNCHES,
     });
   }
 

@@ -32,6 +32,8 @@ import {
   DEFECT_TYPES_OPTIONS,
   GROUPED_DEFECT_TYPES_OPTIONS,
   USER_ACTIONS_OPTIONS,
+  LAUNCH_GRID_COLUMNS_OPTIONS,
+  DEFECT_TYPES_GROUPS_OPTIONS,
 } from '../constants';
 
 const messages = defineMessages({
@@ -51,6 +53,28 @@ const messages = defineMessages({
     id: 'WidgetCriteriaOption.CriteriaSkipped',
     defaultMessage: 'Skipped',
   },
+
+  [PRODUCT_BUG]: {
+    id: 'WidgetCriteriaOption.PRODUCT_BUG',
+    defaultMessage: 'Product bug',
+  },
+  [AUTOMATION_BUG]: {
+    id: 'WidgetCriteriaOption.AUTOMATION_BUG',
+    defaultMessage: 'Automation bug',
+  },
+  [SYSTEM_ISSUE]: {
+    id: 'WidgetCriteriaOption.SYSTEM_ISSUE',
+    defaultMessage: 'System issue',
+  },
+  [TO_INVESTIGATE]: {
+    id: 'WidgetCriteriaOption.TO_INVESTIGATE',
+    defaultMessage: 'To investigate',
+  },
+  [NO_DEFECT]: {
+    id: 'WidgetCriteriaOption.NO_DEFECT',
+    defaultMessage: 'No defect',
+  },
+
   PRODUCT_BUG_TOTAL: {
     id: 'WidgetCriteriaOption.PRODUCT_BUG_TOTAL',
     defaultMessage: 'Total product bugs',
@@ -87,6 +111,7 @@ const messages = defineMessages({
     id: 'WidgetCriteriaOption.Defect_Type_ND001',
     defaultMessage: 'No defect',
   },
+
   [START_LAUNCH]: {
     id: 'WidgetCriteriaOption.start_launch',
     defaultMessage: 'Start launch',
@@ -138,6 +163,27 @@ const messages = defineMessages({
   [ACTIONS_WITH_IMPORT]: {
     id: 'WidgetCriteriaOption.import_actions',
     defaultMessage: 'Import',
+  },
+
+  tags: {
+    id: 'WidgetCriteriaOption.tags',
+    defaultMessage: 'Tags',
+  },
+  user: {
+    id: 'WidgetCriteriaOption.user',
+    defaultMessage: 'User',
+  },
+  start_time: {
+    id: 'WidgetCriteriaOption.start_time',
+    defaultMessage: 'Start time',
+  },
+  end_time: {
+    id: 'WidgetCriteriaOption.end_time',
+    defaultMessage: 'Finish time',
+  },
+  description: {
+    id: 'WidgetCriteriaOption.description',
+    defaultMessage: 'Description',
   },
 });
 
@@ -229,6 +275,22 @@ const getUserActionOptions = (formatMessage) => [
   { value: ACTIONS_WITH_IMPORT, label: formatMessage(messages[ACTIONS_WITH_IMPORT]) },
 ];
 
+const getLaunchGridColumnsOptions = (formatMessage) => [
+  { value: 'tags', label: formatMessage(messages.tags) },
+  { value: 'user', label: formatMessage(messages.user) },
+  { value: 'start_time', label: formatMessage(messages.start_time) },
+  { value: 'end_time', label: formatMessage(messages.end_time) },
+  { value: 'description', label: formatMessage(messages.description) },
+];
+
+const getDefectTypesGroupsOptions = (formatMessage) => [
+  { value: PRODUCT_BUG, label: formatMessage(messages[PRODUCT_BUG]) },
+  { value: AUTOMATION_BUG, label: formatMessage(messages[AUTOMATION_BUG]) },
+  { value: SYSTEM_ISSUE, label: formatMessage(messages[SYSTEM_ISSUE]) },
+  { value: TO_INVESTIGATE, label: formatMessage(messages[TO_INVESTIGATE]) },
+  { value: NO_DEFECT, label: formatMessage(messages[NO_DEFECT]) },
+];
+
 export const getWidgetCriteriaOptions = (optionGroups, formatMessage, meta) => {
   let options = [];
   optionGroups.forEach((optionGroup) => {
@@ -244,6 +306,16 @@ export const getWidgetCriteriaOptions = (optionGroups, formatMessage, meta) => {
         break;
       case USER_ACTIONS_OPTIONS:
         options = options.concat(getUserActionOptions(formatMessage));
+        break;
+      case LAUNCH_GRID_COLUMNS_OPTIONS:
+        options = options.concat(getLaunchGridColumnsOptions(formatMessage));
+        break;
+      case DEFECT_TYPES_GROUPS_OPTIONS:
+        options = options.concat(
+          meta.withoutNoDefect
+            ? getDefectTypesGroupsOptions(formatMessage).slice(0, -1)
+            : getDefectTypesGroupsOptions(formatMessage),
+        );
         break;
       default:
     }

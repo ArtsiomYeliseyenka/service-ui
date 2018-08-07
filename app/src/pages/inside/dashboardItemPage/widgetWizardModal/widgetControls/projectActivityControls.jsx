@@ -63,11 +63,9 @@ export class ProjectActivityControls extends Component {
     const { intl, widgetSettings, initializeWizardSecondStepForm } = props;
     this.criteria = getWidgetCriteriaOptions([USER_ACTIONS_OPTIONS], intl.formatMessage);
     initializeWizardSecondStepForm({
-      criteria: widgetSettings.criteria
-        ? widgetSettings.criteria
-        : this.criteria.map((criteria) => criteria.value),
-      items: widgetSettings.items ? widgetSettings.items : DEFAULT_ITEMS_COUNT,
-      usernames: widgetSettings.usernames ? widgetSettings.usernames : [],
+      criteria: widgetSettings.criteria || this.criteria.map((criteria) => criteria.value),
+      items: widgetSettings.items || DEFAULT_ITEMS_COUNT,
+      usernames: widgetSettings.usernames || [],
     });
   }
 

@@ -56,12 +56,10 @@ export class OverallStatisticsControls extends Component {
       { defectTypes },
     );
     initializeWizardSecondStepForm({
-      criteria: widgetSettings.criteria
-        ? widgetSettings.criteria
-        : this.criteria.map((criteria) => criteria.value),
-      items: widgetSettings.items ? widgetSettings.items : DEFAULT_ITEMS_COUNT,
-      viewMode: widgetSettings.viewMode ? widgetSettings.viewMode : CHART_MODES.PANEL_VIEW,
-      mode: widgetSettings.mode ? widgetSettings.mode : CHART_MODES.ALL_LAUNCHES,
+      criteria: widgetSettings.criteria || this.criteria.map((criteria) => criteria.value),
+      items: widgetSettings.items || DEFAULT_ITEMS_COUNT,
+      viewMode: widgetSettings.viewMode || CHART_MODES.PANEL_VIEW,
+      mode: widgetSettings.mode || CHART_MODES.ALL_LAUNCHES,
     });
   }
 

@@ -66,13 +66,11 @@ export class LaunchStatisticsControls extends Component {
       { defectTypes },
     );
     initializeWizardSecondStepForm({
-      criteria: widgetSettings.criteria
-        ? widgetSettings.criteria
-        : this.criteria.map((criteria) => criteria.value),
-      items: widgetSettings.items ? widgetSettings.items : DEFAULT_ITEMS_COUNT,
-      mode: widgetSettings.mode ? widgetSettings.mode : CHART_MODES.LAUNCH_MODE,
-      viewMode: widgetSettings.viewMode ? widgetSettings.viewMode : CHART_MODES.AREA_VIEW,
-      zoom: widgetSettings.zoom ? widgetSettings.zoom : false,
+      criteria: widgetSettings.criteria || this.criteria.map((criteria) => criteria.value),
+      items: widgetSettings.items || DEFAULT_ITEMS_COUNT,
+      mode: widgetSettings.mode || CHART_MODES.LAUNCH_MODE,
+      viewMode: widgetSettings.viewMode || CHART_MODES.AREA_VIEW,
+      zoom: !!widgetSettings.zoom,
     });
   }
 
